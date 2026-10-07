@@ -1,26 +1,33 @@
-# ReviewBooster - Vercel + Stripe Ready
+# ReviewBooster
 
-## Deploy to Vercel in 2 mins
-1. Push this folder to GitHub or drag folder to Vercel import
-2. In Vercel dashboard > Settings > Environment Variables, add:
-   - STRIPE_SECRET_KEY
-   - STRIPE_PRICE_STARTER (for $19/mo)
-   - STRIPE_PRICE_GROWTH (for $39/mo)
-   - STRIPE_PRICE_AGENCY (for $79/mo)
-   - NEXT_PUBLIC_SITE_URL = your vercel URL
-3. Deploy. Done.
+A Next.js landing page that sells a Google-review generation service, with Stripe Checkout for three subscription tiers.
 
-## Stripe Setup (2 min)
-- Go to Stripe > Products > Create 3 products:
-  - Starter $19/mo recurring
-  - Growth $39/mo recurring
-  - Agency $79/mo recurring
-- Copy Price IDs (price_xxx) into Vercel env
-- Alternative: use Payment Links and just replace hrefs in pages/index.js if you don't want API route
+## Features
 
-## How Checkout Works
-- Frontend calls /api/checkout?plan=starter|growth|agency
-- API creates Stripe Checkout Session and redirects
-- Success redirects to /?success=1
+- Marketing landing page ("Turn Every Happy Customer Into 5-Star Google Reviews On Autopilot")
+- Three pricing tiers: Starter $19/mo, Growth $39/mo, Agency White-Label $79/mo
+- Stripe Checkout sessions via `/api/checkout?plan=starter|growth|agency`; success redirects to `/?success=1`
+- Client-side only for v1 — no database
 
-Landing page builder is fully client-side, no DB needed for v1.
+## Tech stack
+
+- Next.js 14.2.5, React 18.3.1
+- `stripe` Node SDK (^14.21.0) for Checkout sessions
+- `vercel.json` for Vercel deployment
+
+## Getting started
+
+- `npm run dev` / `npm run build` / `npm start` (from `package.json`)
+- Environment variables: `STRIPE_SECRET_KEY`, `STRIPE_PRICE_STARTER`, `STRIPE_PRICE_GROWTH`, `STRIPE_PRICE_AGENCY`, `NEXT_PUBLIC_SITE_URL`
+- Stripe setup: create the three recurring products in the Stripe dashboard and copy the price IDs into the env vars above (alternatively replace the checkout links with Stripe Payment Links)
+
+## Project structure
+
+- `pages/index.js` — landing page with pricing section
+- `pages/_app.js` — app wrapper
+- `pages/api/checkout.js` — creates Stripe Checkout sessions
+- `next.config.js`, `vercel.json` — build/deploy config
+
+## Status
+
+Small, self-contained v1. Checkout flow is wired to Stripe; the "landing page builder" described in the original notes is not present beyond the single landing page.
